@@ -20,6 +20,7 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.yNudge = -18;
     this.setStartPositions();
 };
 
@@ -27,18 +28,15 @@ Enemy.prototype.setStartPositions = function() {
     this.x = -1;
     this.y = getRandomIntInclusive(gridDimensions.stonesStart,
     gridDimensions.stonesEnd)
-    this.xRate = getRandomArbitrary(.2, .4);
+    this.xRate = getRandomArbitrary(2, 4);
 };
+
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
     if (this.x < gridDimensions.numColums) {
         this.x += dt * this.xRate;
-        console.log(this.x);
     }
     else {
         this.setStartPositions();
@@ -48,18 +46,16 @@ Enemy.prototype.update = function(dt) {
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x * 101,
-    this.y * 73);
+    this.y * 83 + this.yNudge);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = 2;
     this.y = 5;
     this.movement = {x: 0, y: 0};
-    this.yNudge = -30; // correct for larger bottom row;
+    this.yNudge = -30; // to get player img into middle of row;
+    this.status = "playing";
 };
 
 Player.prototype.moveLeft = function() {
@@ -95,11 +91,23 @@ Player.prototype.update = function() {
     this.y += this.movement.y;
     this.movement.x = 0;
     this.movement.y = 0;
+    if (this.y === 0) {
+        this.status = "won";
+        this.x = 2;
+        this.y = 5;
+    }
 };
 
 Player.prototype.render = function() {
+    ctx.font = "48px serif";
     ctx.drawImage(Resources.get(this.sprite), this.x * 101,
     this.y * 83 + this.yNudge);
+    if (this.status === "won") {
+        ctx.fillText("You win!", 10, 550);
+    }
+    if (this.status === "lost") {
+        ctx.fillText("You lose!", 10, 550);
+    }
 };
 
 Player.prototype.handleInput = function(directionStr) {
@@ -123,7 +131,7 @@ Player.prototype.handleInput = function(directionStr) {
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
 
-for (var i = 0; i < 1; i++) {
+for (var i = 0; i < 4; i++) {
    allEnemies.push(new Enemy());
 }
 

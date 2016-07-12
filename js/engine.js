@@ -70,17 +70,31 @@ var Engine = (function(global) {
     }
 
     /* This function is called by main (our game loop) and itself calls all
-     * of the functions which may need to update entity's data. Based on how
-     * you implement your collision detection (when two entities occupy the
-     * same space, for instance when your character should die), you may find
-     * the need to add an additional function call here. For now, we've left
-     * it commented out - you may or may not want to implement this
-     * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
+     * of the functions which may need to update entity's data.
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+    }
+
+    /* ------ADDED-------------
+     * This function is called by update(dt) and check if the player and
+     * any enemies occupy the same space. If so, it resets the player's
+     * position, and updates status to 'lost'.
+     */
+    function checkCollisions() {
+        allEnemies.forEach(function(enemy) {
+            if (Math.abs((player.x - enemy.x)) < 0.85 &&
+            Math.floor(enemy.y) === player.y) {
+                console.log(player.x, enemy.x);
+                player.x = 2;
+                player.y = 5;
+                player.movement.x = 0;
+                player.movement.y = 0;
+                player.status = "lost";
+                return;
+            }
+        });
     }
 
     /* This is called by the update function and loops through all of the
