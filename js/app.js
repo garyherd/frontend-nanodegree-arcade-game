@@ -29,7 +29,7 @@ Enemy.prototype.setStartPositions = function() {
     this.x = -1;
     this.y = getRandomIntInclusive(gridDimensions.stonesStart,
     gridDimensions.stonesEnd)
-    this.xRate = getRandomArbitrary(2, 4);
+    this.xRate = getRandomArbitrary(1, 2);
 };
 
 
@@ -104,10 +104,11 @@ Player.prototype.render = function() {
     ctx.font = "48px sans-serif";
     ctx.drawImage(Resources.get(this.sprite), this.x * 101,
     this.y * 83 + this.yNudge);
-    if (this.status === "won") {
+    console.log(this.y);
+    if (this.status === "won" && this.y === 5) {
         ctx.fillText("You win!", 10, 550);
     }
-    if (this.status === "lost") {
+    else {
         ctx.fillText("", 10, 550);
     }
 };
