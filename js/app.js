@@ -10,6 +10,7 @@ function getRandomIntInclusive(min, max) {
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
+
 //----------end helper items----------------------------------
 
 // Enemies our player must avoid
@@ -55,7 +56,7 @@ var Player = function() {
     this.y = 5;
     this.movement = {x: 0, y: 0};
     this.yNudge = -30; // to get player img into middle of row;
-    this.status = "playing";
+    this.status;
 };
 
 Player.prototype.moveLeft = function() {
@@ -86,6 +87,7 @@ Player.prototype.moveDown = function() {
     }
 };
 
+
 Player.prototype.update = function() {
     this.x += this.movement.x;
     this.y += this.movement.y;
@@ -99,14 +101,14 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.render = function() {
-    ctx.font = "48px serif";
+    ctx.font = "48px sans-serif";
     ctx.drawImage(Resources.get(this.sprite), this.x * 101,
     this.y * 83 + this.yNudge);
     if (this.status === "won") {
         ctx.fillText("You win!", 10, 550);
     }
     if (this.status === "lost") {
-        ctx.fillText("You lose!", 10, 550);
+        ctx.fillText("", 10, 550);
     }
 };
 

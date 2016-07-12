@@ -81,6 +81,9 @@ var Engine = (function(global) {
      * This function is called by update(dt) and check if the player and
      * any enemies occupy the same space. If so, it resets the player's
      * position, and updates status to 'lost'.
+     *
+     * The 0.85 difference in the if allows the bug to be just over the line
+     * into the same box as the player before triggering a true condition.
      */
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
@@ -166,6 +169,7 @@ var Engine = (function(global) {
         });
 
         player.render();
+        console.log(player.status);
     }
 
     /* This function does nothing but it could have been a good place to
