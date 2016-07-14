@@ -1,5 +1,6 @@
 //---------------helper items--------------------------------
 var gridDimensions = {numRows: 6, numColums: 5, stonesStart: 1, stonesEnd: 3};
+var ENEMYCOUNT = 4;
 
 // Returns a random integer between min (included) and max (included)
 function getRandomIntInclusive(min, max) {
@@ -15,11 +16,6 @@ function getRandomArbitrary(min, max) {
 
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.yNudge = -18;
     this.setStartPositions();
@@ -46,8 +42,11 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x * 101,
-    this.y * 83 + this.yNudge);
+    ctx.drawImage(
+		Resources.get(this.sprite),
+		this.x * 101,
+		this.y * 83 + this.yNudge
+	);
 };
 
 var Player = function() {
@@ -87,7 +86,6 @@ Player.prototype.moveDown = function() {
     }
 };
 
-
 Player.prototype.update = function() {
     this.x += this.movement.x;
     this.y += this.movement.y;
@@ -98,23 +96,21 @@ Player.prototype.update = function() {
         this.x = 2;
         this.y = 5;
     }
+	else {
+		this.status = "playing";
+	}
 };
-
+// draws Player on canvas and prints/deletes You Win as needed
 Player.prototype.render = function() {
     ctx.font = "48px sans-serif";
     ctx.drawImage(Resources.get(this.sprite), this.x * 101,
     this.y * 83 + this.yNudge);
-    console.log(this.y);
     if (this.status === "won" && this.y === 5) {
-        ctx.fillText("You win!", 10, 550);
-    }
-    else {
-        ctx.fillText("", 10, 550);
+		alert("You WIN!");
     }
 };
 
 Player.prototype.handleInput = function(directionStr) {
-
     if (directionStr == 'left') {
         this.moveLeft();
     }
@@ -129,14 +125,18 @@ Player.prototype.handleInput = function(directionStr) {
     }
 };
 
-
-// Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
 
-for (var i = 0; i < 4; i++) {
-   allEnemies.push(new Enemy());
+var pushEnemies = function() {
+	var i = 0;
+	while (i < ENEMYCOUNT) {
+		allEnemies.push(new Enemy());
+		i++;
+	};
 }
+
+pushEnemies();
 
 // Place the player object in a variable called player
 var player = new Player();

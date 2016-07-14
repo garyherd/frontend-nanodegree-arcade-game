@@ -89,7 +89,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             if (Math.abs((player.x - enemy.x)) < 0.85 &&
             Math.floor(enemy.y) === player.y) {
-                console.log(player.x, enemy.x);
                 player.x = 2;
                 player.y = 5;
                 player.movement.x = 0;
